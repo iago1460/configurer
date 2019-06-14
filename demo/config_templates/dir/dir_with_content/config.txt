@@ -1,0 +1,4 @@
+The structure of "{{ PROJECT_NAME }}" should be keep as it is.
+
+All files are attempted to render.
+Empty folders and other files are copied across keeping same permissions.

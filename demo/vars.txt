@@ -1,0 +1,5 @@
+# Example variable file.
+# Format: VARIABLE=VALUE (if "export " is present will be ignored)
+
+export VAR1=var1 was replaced
+PROJECT_NAME=Test project

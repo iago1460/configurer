@@ -1,0 +1,5 @@
+# Example of yaml file config
+
+python_version: {{ PYTHON_VERSION }}
+var1: "{{ VAR1 }}"
+don_not_replace: VAR1
