@@ -56,6 +56,7 @@ class FilesEventHandler(FileSystemEventHandler):
                 output_file_path=output_file_path,
                 template_vars=self.get_template_vars_func()
             )
+            logging.info(f'File "{output_file_path}" was processed')
 
     def _get_target_path(self, path):
         relative_path = Path(path).relative_to(self.source_path)
@@ -91,6 +92,7 @@ class EnvEventHandler(FileSystemEventHandler):
 
     def _render(self, event):
         render_dir(self.source_path, self.output_path, self.get_template_vars_func)
+        logging.info(f'Config was processed')
 
 
 class Watcher:

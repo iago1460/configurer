@@ -10,7 +10,9 @@ from .render import render_dir
 from .vars import get_vars
 from .watcher import Watcher, EnvEventHandler, FilesEventHandler
 
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+
+FORMAT = '%(asctime)s %(levelname)s : %(message)s'
+DATEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 def PathType(path):
@@ -29,39 +31,52 @@ def main():
     )
     parser.add_argument(
         "--vars",
-        help=f"Path to the file with variables.",
+        help="Path to the file with variables.",
         dest='vars_path',
         type=PathType,
         default=None
     )
     parser.add_argument(
         '--output',
-        help=f"Path to the output directory.",
+        help="Path to the output directory.",
         dest='output_path',
         type=PathType,
         required=True,
     )
     parser.add_argument(
         '--source',
-        help=f"Path to the source directory.",
+        help="Path to the source directory.",
         dest='source_path',
         type=PathType,
         required=True,
     )
     parser.add_argument(
         '--watch',
-        help=f"Keep watching for changes.",
+        help="Keep watching for changes.",
         dest='watch',
+        action='store_true',
+        default=False
+    )
+    parser.add_argument(
+        '--verbose',
+        help='Makes curl verbose during the operation. Useful for debugging and seeing what is going on "under the hood".',
+        dest='verbose',
         action='store_true',
         default=False
     )
 
     args = parser.parse_args()
 
+    logging_level = logging.INFO
+    if args.verbose:
+        logging_level = logging.DEBUG
+    logging.basicConfig(format=FORMAT, datefmt=DATEFMT, stream=sys.stdout, level=logging_level)
+
     def get_template_vars_func():
         return get_vars(file=args.vars_path)
 
     render_dir(args.source_path, args.output_path, get_template_vars_func)
+    logging.info(f'Config was processed')
 
     if args.watch:
         watchers = [
@@ -81,6 +96,8 @@ def main():
             )
         for watch in watchers:
             watch.run()
+
+        logging.info(f'Watchers enabled')
         try:
             while True:
                 time.sleep(1)

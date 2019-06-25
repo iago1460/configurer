@@ -60,4 +60,5 @@ optional arguments:
   --output OUTPUT_PATH  Path to the output directory.
   --source SOURCE_PATH  Path to the source directory.
   --watch               Keep watching for changes.
+  --verbose             Makes curl verbose during the operation. Useful for debugging and seeing what is going on "under the hood".
 ```
